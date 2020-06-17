@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useCountdown(timestamp) {
   const [timeLeft, setTimeLeft] = useState("00:00:00");
@@ -35,7 +35,12 @@ export function useCountdown(timestamp) {
     };
 
     const handle = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+      const timeLeft = calculateTimeLeft();
+      if (timeLeft === "DONE") {
+        clearInterval(handle);
+      }
+
+      setTimeLeft(timeLeft);
     }, 1000);
 
     return () => clearInterval(handle);
